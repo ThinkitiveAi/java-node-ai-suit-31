@@ -1,0 +1,469 @@
+{
+	"info": {
+		"_postman_id": "healthfirst-api-collection",
+		"name": "HealthFirst API",
+		"description": "Healthcare Provider and Patient Management System API Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "healthfirst-api"
+	},
+	"item": [
+		{
+			"name": "Provider Management",
+			"item": [
+				{
+					"name": "Register Provider",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phoneNumber\": \"+1234567890\",\n  \"password\": \"StrongP@ssw0rd\",\n  \"specialization\": \"Cardiology\",\n  \"licenseNumber\": \"LIC123456\",\n  \"yearsOfExperience\": 10,\n  \"clinicAddress\": {\n    \"street\": \"123 Main St\",\n    \"city\": \"Metropolis\",\n    \"state\": \"NY\",\n    \"zip\": \"10001\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/provider/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"provider",
+								"register"
+							]
+						},
+						"description": "Register a new healthcare provider"
+					},
+					"response": []
+				},
+				{
+					"name": "Provider Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test.doctor@example.com\",\n  \"password\": \"StrongP@ssw0rd\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/provider/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"provider",
+								"login"
+							]
+						},
+						"description": "Authenticate a provider and get JWT token"
+					},
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data && response.data.access_token) {",
+									"        pm.collectionVariables.set('provider_token', response.data.access_token);",
+									"        console.log('Provider JWT token saved:', response.data.access_token);",
+									"    }",
+									"} else {",
+									"    console.log('Login failed:', pm.response.text());",
+									"}"
+								]
+							}
+						}
+					]
+				}
+			],
+			"description": "Provider registration and authentication endpoints"
+		},
+		{
+			"name": "Patient Management",
+			"item": [
+				{
+					"name": "Register Patient",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Alice\",\n  \"lastName\": \"Johnson\",\n  \"email\": \"alice.johnson@example.com\",\n  \"phoneNumber\": \"+1555123456\",\n  \"password\": \"StrongP@ssw0rd\",\n  \"dateOfBirth\": \"1990-05-15\",\n  \"gender\": \"female\",\n  \"address\": {\n    \"street\": \"789 Pine St\",\n    \"city\": \"Chicago\",\n    \"state\": \"IL\",\n    \"zip\": \"60601\"\n  },\n  \"emergencyContact\": {\n    \"name\": \"Bob Johnson\",\n    \"phone\": \"+1555123457\",\n    \"relationship\": \"spouse\"\n  },\n  \"medicalHistory\": [\n    \"Hypertension\",\n    \"Diabetes\"\n  ],\n  \"insuranceInfo\": {\n    \"provider\": \"Blue Cross\",\n    \"policyNumber\": \"BC123456\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/patient/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"patient",
+								"register"
+							]
+						},
+						"description": "Register a new patient"
+					},
+					"response": []
+				},
+				{
+					"name": "Patient Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"alice.johnson@example.com\",\n  \"password\": \"StrongP@ssw0rd\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/patient/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"patient",
+								"login"
+							]
+						},
+						"description": "Authenticate a patient and get JWT token"
+					},
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.data && response.data.access_token) {",
+									"        pm.collectionVariables.set('patient_token', response.data.access_token);",
+									"        console.log('Patient JWT token saved:', response.data.access_token);",
+									"    }",
+									"} else {",
+									"    console.log('Login failed:', pm.response.text());",
+									"}"
+								]
+							}
+						}
+					]
+				}
+			],
+			"description": "Patient registration and authentication endpoints"
+		},
+		{
+			"name": "Provider Availability Management",
+			"item": [
+				{
+					"name": "Create Provider Availability",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"providerId\": 1,\n  \"appointmentType\": \"CONSULTATION\",\n  \"startTime\": \"2024-01-15T09:00:00Z\",\n  \"endTime\": \"2024-01-15T17:00:00Z\",\n  \"slotDurationMinutes\": 30,\n  \"location\": \"Main Clinic\",\n  \"price\": 150.00,\n  \"currency\": \"USD\",\n  \"timezone\": \"America/New_York\",\n  \"recurrenceType\": \"WEEKLY\",\n  \"recurrenceEndDate\": \"2024-12-31T23:59:59Z\",\n  \"notes\": \"Regular consultation hours\",\n  \"specialRequirements\": \"None\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/provider/availability",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"provider",
+								"availability"
+							]
+						},
+						"description": "Create availability and auto-generate appointment slots with support for recurrence and timezone handling"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Provider Availability",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/provider/1/availability",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"provider",
+								"1",
+								"availability"
+							]
+						},
+						"description": "Return availability with slot counts by status and detailed slot data"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Appointment Slot",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"startTime\": \"2024-01-15T10:00:00Z\",\n  \"endTime\": \"2024-01-15T10:30:00Z\",\n  \"status\": \"BOOKED\",\n  \"price\": 150.00,\n  \"notes\": \"Updated slot information\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/provider/availability/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"provider",
+								"availability",
+								"1"
+							]
+						},
+						"description": "Update slot timing, status, pricing, or notes"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Provider Availability",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/provider/availability/1?deleteRecurring=false",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"provider",
+								"availability",
+								"1"
+							],
+							"query": [
+								{
+									"key": "deleteRecurring",
+									"value": "false"
+								}
+							]
+						},
+						"description": "Delete provider availability (optionally delete all recurring slots)"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Available Slots",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/availability/search?location=Main Clinic&appointmentType=CONSULTATION&startDate=2024-01-15&endDate=2024-01-20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"availability",
+								"search"
+							],
+							"query": [
+								{
+									"key": "location",
+									"value": "Main Clinic"
+								},
+								{
+									"key": "appointmentType",
+									"value": "CONSULTATION"
+								},
+								{
+									"key": "startDate",
+									"value": "2024-01-15"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-01-20"
+								}
+							]
+						},
+						"description": "Patients can search for available slots by location, date, appointment type, etc."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Provider Slots",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{provider_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/provider/1/slots?status=AVAILABLE",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"provider",
+								"1",
+								"slots"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "AVAILABLE"
+								}
+							]
+						},
+						"description": "Get all appointment slots for a specific provider"
+					},
+					"response": []
+				}
+			],
+			"description": "Provider availability and appointment slot management endpoints"
+		},
+		{
+			"name": "Documentation",
+			"item": [
+				{
+					"name": "Swagger UI",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/swagger-ui/index.html",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"swagger-ui",
+								"index.html"
+							]
+						},
+						"description": "Access Swagger UI documentation"
+					},
+					"response": []
+				},
+				{
+					"name": "OpenAPI JSON",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/v3/api-docs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"v3",
+								"api-docs"
+							]
+						},
+						"description": "Get OpenAPI specification in JSON format"
+					},
+					"response": []
+				}
+			],
+			"description": "API documentation endpoints"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "provider_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "patient_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+} 
